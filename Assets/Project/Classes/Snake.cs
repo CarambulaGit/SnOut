@@ -23,25 +23,14 @@ namespace Project.Classes {
                 Y = y;
             }
 
-            public SnakeBlock(Vector2Int pos) {
-                X = pos.x;
-                Y = pos.y;
-            }
+            public SnakeBlock(Vector2Int pos) : this(pos.x, pos.y) { }
 
-            public SnakeBlock(SnakeBlock snakeBlock) {
-                X = snakeBlock.X;
-                Y = snakeBlock.Y;
-            }
+            public SnakeBlock(SnakeBlock snakeBlock) : this(snakeBlock.X, snakeBlock.Y) { }
 
-            public SnakeBlock(int x, int y, Vector2Int offset) {
-                X = x + offset.x;
-                Y = y + offset.y;
-            }
+            public SnakeBlock(int x, int y, Vector2Int offset) : this(x + offset.x, y + offset.y) { }
 
-            public SnakeBlock(SnakeBlock snakeBlock, Vector2Int offset) {
-                X = snakeBlock.X + offset.x;
-                Y = snakeBlock.Y + offset.y;
-            }
+            public SnakeBlock(SnakeBlock snakeBlock, Vector2Int offset) :
+                this(snakeBlock.X + offset.x, snakeBlock.Y + offset.y) { }
 
             public override bool Equals(object obj) {
                 if (!(obj is SnakeBlock objBlock)) return false;
