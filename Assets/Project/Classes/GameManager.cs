@@ -6,6 +6,8 @@ namespace Project.Classes {
         private Snake _snake;
 
         private bool _gameOn;
+        public event Action OnGameStarted;
+        public event Action OnGameFinished;
 
         public GameManager(Field field, Snake snake) {
             _field = field;
@@ -13,8 +15,15 @@ namespace Project.Classes {
             _snake.OnSelfCollision += FinishGame;
         }
 
+        public bool TryChangeSnakeDir(Snake.Direction newDir) {
+            return _snake.TryChangeDir(newDir);
+        }
+
         public void Tick() {
-            if (!_gameOn) return;
+            if (!_gameOn) {
+                throw new Exception("Start game before invoke GameManager.Tick");
+            }
+
             _snake.Tick();
             CheckForGameOver();
         }
@@ -35,6 +44,7 @@ namespace Project.Classes {
                 throw new Exception("Game already going");
             }
             _gameOn = true;
+            OnGameStarted?.Invoke();
         }
 
         private void FinishGame() {
@@ -42,6 +52,7 @@ namespace Project.Classes {
                 throw new Exception("Can't finish before start");
             }
             _gameOn = false;
+            OnGameFinished?.Invoke();
         }
     }
 }

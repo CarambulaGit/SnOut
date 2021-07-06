@@ -13,9 +13,10 @@ namespace Project.Classes {
             Down = 2
         }
 
-        public readonly struct SnakeBlock {
+        public readonly struct SnakeBlock : IHasPosition {
             public int X { get; }
             public int Y { get; }
+
 
             public SnakeBlock(int x, int y) {
                 X = x;
@@ -48,27 +49,27 @@ namespace Project.Classes {
             }
         }
 
-        private int _size;
         private List<SnakeBlock> _snake = new List<SnakeBlock>();
 
-        private Direction _curDir;
+        public int Size { get; private set; }
+        public Direction CurDir { get; private set; }
 
         public event Action OnSelfCollision;
 
         public SnakeBlock Head => _snake[0];
-        private int CurrentSize => _snake.Count;
-        private bool NeedToRemove => _size == CurrentSize;
+        public int CurrentSize => _snake.Count; // can be less than Size
+        private bool NeedToRemove => Size + 1 == CurrentSize;
 
         public Snake(Vector2Int startPos, Direction startDir) {
             _snake.Add(new SnakeBlock(startPos));
-            _curDir = startDir;
-            _size = 1;
+            CurDir = startDir;
+            Size = 1;
         }
 
-        public void IncrementSize() => _size++;
+        public void IncrementSize() => Size++;
 
         private void Move() {
-            _snake.AddAtStart(new SnakeBlock(Head, _curDir.GetVect2Representation()));
+            _snake.AddAtStart(new SnakeBlock(Head, CurDir.GetVect2Representation()));
             if (NeedToRemove) {
                 _snake.RemoveLast();
             }
@@ -79,9 +80,9 @@ namespace Project.Classes {
             CheckForSelfCollision();
         }
 
-        private bool TryChangeDir(Direction newDir) {
-            if ((int) _curDir + (int) newDir == IMPOSIBLE_DIR) return false;
-            _curDir = newDir;
+        public bool TryChangeDir(Direction newDir) {
+            if ((int) CurDir + (int) newDir == IMPOSIBLE_DIR) return false;
+            CurDir = newDir;
             return true;
         }
 
