@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Project.Classes {
@@ -14,6 +16,10 @@ namespace Project.Classes {
             list.Insert(0, item);
         }
 
+        public static T Last<T>(this List<T> list) {
+            return list[list.Count - 1];
+        }
+
         #endregion
 
         #region DirectionExtensions
@@ -26,6 +32,17 @@ namespace Project.Classes {
                 Snake.Direction.Down => Vector2Int.down,
                 _ => throw new ArgumentOutOfRangeException(nameof(dir), dir, null)
             };
+        }
+
+        #endregion
+        
+    }
+
+    public static class Utils {
+        #region EnumUtils
+
+        public static int Max<T>() where T : Enum {
+            return Enum.GetValues(typeof(T)).Cast<int>().Max();
         }
 
         #endregion
