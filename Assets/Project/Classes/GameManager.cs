@@ -29,20 +29,29 @@ namespace Project.Classes {
         }
 
         private void CheckForGameOver() {
-            CheckForCollisionWithBorders(_field, _snake);
+            if (CheckForCollisionWithBorders(_field, _snake) ||
+                CheckForCollisionWithBlocks(_field, _snake)
+            ) { }
         }
 
-        private void CheckForCollisionWithBorders(Field field, Snake snake) {
-            if ((snake.Head.X >= field.XSize || snake.Head.X < 0) ||
-                (snake.Head.Y >= field.YSize || snake.Head.Y < 0)) {
-                FinishGame();
-            }
+        private bool CheckForCollisionWithBorders(Field field, Snake snake) {
+            if ((snake.Head.X < field.XSize && snake.Head.X >= 0) &&
+                (snake.Head.Y < field.YSize && snake.Head.Y >= 0)) return false;
+            FinishGame();
+            return true;
+        }
+
+        private bool CheckForCollisionWithBlocks(Field field, Snake snake) {
+            if (field.Blocks[snake.Head.Y, snake.Head.X] == null) return false;
+            FinishGame();
+            return true;
         }
 
         public void StartGame() {
             if (_gameOn) {
                 throw new Exception("Game already going");
             }
+
             _gameOn = true;
             OnGameStarted?.Invoke();
         }
@@ -51,6 +60,7 @@ namespace Project.Classes {
             if (!_gameOn) {
                 throw new Exception("Can't finish before start");
             }
+
             _gameOn = false;
             OnGameFinished?.Invoke();
         }
