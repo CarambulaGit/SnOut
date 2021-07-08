@@ -1,18 +1,15 @@
 ﻿using System;
 
 namespace Project.Classes {
-    public class Block : IHasPosition {
+    public class Block {
         public enum BlockType {
             Damaged,
             Intact
         }
 
-        public int X { get; }
-        public int Y { get; }
-
         public BlockType Type {
             get => _type;
-            private set {
+            set {
                 if (_type == value) return;
                 _type = value;
                 OnTypeChanged?.Invoke();
@@ -23,9 +20,7 @@ namespace Project.Classes {
         public event Action OnTypeChanged;
         public event Action OnDestroy;
 
-        public Block(int x, int y, BlockType type) {
-            X = x;
-            Y = y;
+        public Block(BlockType type) {
             Type = type;
         }
 
