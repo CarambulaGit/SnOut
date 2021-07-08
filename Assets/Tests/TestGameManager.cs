@@ -30,6 +30,20 @@ namespace Tests {
         }
 
         [Test]
+        public void GameManagerCollisionWithBlocksTest() {
+            var gameManager = PatternsForTests.InitGameManager(new Vector2Int(5, 5), _defaultSnakeDir,
+                _defaultFieldSizes, out _, out var _field);
+            var gameFinished = false;
+            gameManager.OnGameFinished += () => { gameFinished = true; };
+            _field.SpawnBlocks(new Vector2Int(3, 3));
+            gameManager.StartGame();
+            gameManager.Tick();
+            Assert.IsFalse(gameFinished);
+            gameManager.Tick();
+            Assert.IsTrue(gameFinished);
+        }
+
+        [Test]
         public void GameManagerSelfCollisionTest() {
             var gameManager = PatternsForTests.InitGameManager(_defaultSnakeVector, _defaultSnakeDir,
                 _defaultFieldSizes, out var snake, out _);
