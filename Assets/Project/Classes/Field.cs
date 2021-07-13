@@ -11,21 +11,24 @@ namespace Project.Classes {
 
         public Block[,] Blocks { get; }
 
-        public event Action OnBlocksChanged;
+        public event Action OnBlocksArrayChanged;
 
         public Field(int xSize, int ySize, Block[,] blocks) {
             if (xSize <= 1 || ySize <= 1) {
                 throw new Exception("Field sizes too small");
+            }
+            if (blocks.GetLength(0) != ySize || blocks.GetLength(1) != xSize) {
+                throw new Exception("Incorrect blocks array");
             }
 
             XSize = xSize;
             YSize = ySize;
 
             Blocks = blocks;
-            OnBlocksChanged?.Invoke();
+            OnBlocksArrayChanged?.Invoke();
         }
 
-        public Field(int xSize, int ySize) : this(xSize, ySize, new Block[xSize, ySize]) { }
+        public Field(int xSize, int ySize) : this(xSize, ySize, new Block[ySize, xSize]) { }
 
         public void SpawnBlocks(Vector2Int rectSize) {
             if (XSize <= 2 && YSize <= 2) {
@@ -51,7 +54,7 @@ namespace Project.Classes {
                 }
             }
 
-            OnBlocksChanged?.Invoke();
+            OnBlocksArrayChanged?.Invoke();
         }
 
         private void FindRectPos(Vector2Int rectSize, out int minX, out int minY, out int maxX, out int maxY) {
