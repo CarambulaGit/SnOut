@@ -5,7 +5,7 @@ namespace Project.Classes {
         private Field _field;
         private Snake _snake;
 
-        private bool _gameOn;
+        public bool GameOn { get; private set; }
         public event Action OnGameStarted;
         public event Action OnGameFinished;
 
@@ -20,7 +20,7 @@ namespace Project.Classes {
         }
 
         public void Tick() {
-            if (!_gameOn) {
+            if (!GameOn) {
                 throw new Exception("Start game before invoke GameManager.Tick");
             }
 
@@ -48,20 +48,20 @@ namespace Project.Classes {
         }
 
         public void StartGame() {
-            if (_gameOn) {
+            if (GameOn) {
                 throw new Exception("Game already going");
             }
 
-            _gameOn = true;
+            GameOn = true;
             OnGameStarted?.Invoke();
         }
 
         private void FinishGame() {
-            if (!_gameOn) {
+            if (!GameOn) {
                 throw new Exception("Can't finish before start");
             }
 
-            _gameOn = false;
+            GameOn = false;
             OnGameFinished?.Invoke();
         }
     }
