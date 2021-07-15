@@ -37,21 +37,26 @@ namespace Project.Classes {
                 if (!(obj is SnakeBlock objBlock)) return false;
                 return objBlock.X == X && objBlock.Y == Y;
             }
+
+            public override string ToString() {
+                return new Vector2Int(X, Y).ToString();
+            }
         }
 
-        private List<SnakeBlock> _snake = new List<SnakeBlock>();
+        public List<SnakeBlock> SnakeBlocks { get; private set; } = new List<SnakeBlock>();
 
         public int Size { get; private set; }
         public Direction CurDir { get; private set; }
 
         public event Action OnSelfCollision;
+        public event Action OnCurrentSizeIncremented;
 
-        public SnakeBlock Head => _snake[0];
-        public int CurrentSize => _snake.Count; // can be less than Size
+        public SnakeBlock Head => SnakeBlocks[0];
+        public int CurrentSize => SnakeBlocks.Count; // can be less than Size
         private bool NeedToRemove => Size + 1 == CurrentSize;
 
         public Snake(Vector2Int startPos, Direction startDir) {
-            _snake.Add(new SnakeBlock(startPos));
+            SnakeBlocks.Add(new SnakeBlock(startPos));
             CurDir = startDir;
             Size = 1;
         }
@@ -59,9 +64,12 @@ namespace Project.Classes {
         public void IncrementSize() => Size++;
 
         private void Move() {
-            _snake.AddAtStart(new SnakeBlock(Head, CurDir.GetVect2Representation()));
+            SnakeBlocks.AddAtStart(new SnakeBlock(Head, CurDir.GetVect2Representation()));
             if (NeedToRemove) {
-                _snake.RemoveLast();
+                SnakeBlocks.RemoveLast();
+            }
+            else {
+                OnCurrentSizeIncremented?.Invoke();
             }
         }
 
@@ -77,8 +85,8 @@ namespace Project.Classes {
         }
 
         private void CheckForSelfCollision() {
-            for (var i = 1; i < _snake.Count; i++) {
-                if (Head.Equals(_snake[i])) {
+            for (var i = 1; i < SnakeBlocks.Count; i++) {
+                if (Head.Equals(SnakeBlocks[i])) {
                     OnSelfCollision?.Invoke();
                 }
             }
