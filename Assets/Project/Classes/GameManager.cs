@@ -8,11 +8,27 @@ namespace Project.Classes {
         public bool GameOn { get; private set; }
         public event Action OnGameStarted;
         public event Action OnGameFinished;
+        public event Action OnTickEnd;
+        public event Action OnSnakeReplaced;
+        public bool Initialized { get; private set; }
+
+        public GameManager() { }
 
         public GameManager(Field field, Snake snake) {
+            Initialize(field, snake);
+        }
+
+        public void Initialize(Field field, Snake snake) {
             _field = field;
             _snake = snake;
             _snake.OnSelfCollision += FinishGame;
+            Initialized = true;
+        }
+
+        public void ChangeSnake(Snake snake) {
+            _snake = snake;
+            _snake.OnSelfCollision += FinishGame;
+            OnSnakeReplaced?.Invoke();
         }
 
         public bool TryChangeSnakeDir(Snake.Direction newDir) {
@@ -20,12 +36,12 @@ namespace Project.Classes {
         }
 
         public void Tick() {
-            if (!GameOn) {
-                throw new Exception("Start game before invoke GameManager.Tick");
-            }
+            if (!Initialized) { throw new Exception("Need to GameManager.Initialize first"); }
+            if (!GameOn) { throw new Exception("Start game before invoke GameManager.Tick"); }
 
             _snake.Tick();
             CheckForGameOver();
+            OnTickEnd?.Invoke();
         }
 
         private void CheckForGameOver() {
