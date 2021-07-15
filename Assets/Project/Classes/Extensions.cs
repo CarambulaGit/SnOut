@@ -56,8 +56,8 @@ namespace Project.Classes {
             return dir switch {
                 Snake.Direction.Left => Vector2Int.left,
                 Snake.Direction.Right => Vector2Int.right,
-                Snake.Direction.Up => Vector2Int.up,
-                Snake.Direction.Down => Vector2Int.down,
+                Snake.Direction.Up => Vector2Int.down,
+                Snake.Direction.Down => Vector2Int.up,
                 _ => throw new ArgumentOutOfRangeException(nameof(dir), dir, null)
             };
         }
