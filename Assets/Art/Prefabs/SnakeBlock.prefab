@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4777042937627528326}
   - component: {fileID: 7233016105874144412}
   - component: {fileID: 7252447515417663865}
+  - component: {fileID: 7452685341770357854}
   m_Layer: 0
   m_Name: SnakeBlock
   m_TagString: Untagged
@@ -131,3 +132,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &7452685341770357854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3165397291880804277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e643fde62b443beaec05d51f73f8b04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 4777042937627528326}
+  spriteDefault: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  spriteHead: {fileID: -2413806693520163455, guid: 4adeaf2d2b1c7417e89f026626d8264f, type: 3}
