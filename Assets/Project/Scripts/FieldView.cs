@@ -27,20 +27,19 @@ namespace Project.Scripts {
         private void CreateAndTuneField() {
             Field = new Field(gameController.FieldXSize, gameController.FieldYSize);
             Field.OnBlocksArrayChanged += () => {
-                InitControllers();
-                ConnectBlockWithControllers();
-                SetCorrectView();
+                InitViews();
+                ConnectBlocksWithViews();
+                SetCorrectViewsOptions();
             };
             Field.SpawnBlocks(new Vector2Int(blockClearXSize, blockClearYSize));
         }
 
         private void TuneGrid() {
-            var spriteRenderer = blocksPool.Prefab.GetComponent<SpriteRenderer>();
-            grid.cellSize = spriteRenderer.bounds.size;
+            grid.cellSize = new Vector2(gameController.CellSize, gameController.CellSize);
             grid.alignment = TransformsGrid.Alignment.Central;
         }
 
-        private void InitControllers() {
+        private void InitViews() {
             _blockViews.Clear();
             _blockTransforms = new Transform[Field.Blocks.GetLength(0), Field.Blocks.GetLength(1)];
             var height = Field.Blocks.GetLength(0);
@@ -56,7 +55,7 @@ namespace Project.Scripts {
             }
         }
 
-        private void ConnectBlockWithControllers() {
+        private void ConnectBlocksWithViews() {
             var height = Field.Blocks.GetLength(0);
             var width = Field.Blocks.GetLength(1);
             for (int y = 0, counter = 0; y < height; y++) {
@@ -81,7 +80,7 @@ namespace Project.Scripts {
             };
         }
 
-        private void SetCorrectView() {
+        private void SetCorrectViewsOptions() {
             grid.SetContent(_blockTransforms);
             foreach (var blockTransform in _blockTransforms) {
                 blockTransform?.gameObject.SetActive(true);
