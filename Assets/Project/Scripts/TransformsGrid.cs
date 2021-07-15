@@ -16,7 +16,7 @@ namespace Project.Scripts {
         public List<Transform> content = new List<Transform>();
         private Action UpdatePosition;
         private Alignment _prevAlignment;
-        
+
         private void OnEnable() {
             OnAlignChanged();
             _prevAlignment = alignment;
@@ -35,7 +35,7 @@ namespace Project.Scripts {
                 ? needToAdd / columnCount + 1
                 : needToAdd / columnCount;
         }
-        
+
         private void AlignmentCheck() {
             if (alignment == _prevAlignment) return;
             OnAlignChanged();
@@ -57,6 +57,7 @@ namespace Project.Scripts {
             foreach (var elem in array) {
                 content.Add(elem);
             }
+
             UpdatePosition.Invoke();
         }
 
@@ -80,6 +81,12 @@ namespace Project.Scripts {
                 var offsetX = x - parentPosInGridX;
                 content[i].localPosition = new Vector3(offsetX * cellSize.x, -offsetY * cellSize.y);
             }
+        }
+
+        public Vector3 GetPositionByXAndY(int x, int y) {
+            var offsetY = alignment == Alignment.Central ? y + 0.5f - rowCount / 2f : y + 0.5f;
+            var offsetX = alignment == Alignment.Central ? x + 0.5f - columnCount / 2f : x + 0.5f;
+            return  transform.position + new Vector3(offsetX * cellSize.x, -offsetY * cellSize.y);
         }
     }
 }
