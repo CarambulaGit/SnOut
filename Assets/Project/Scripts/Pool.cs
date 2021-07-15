@@ -29,7 +29,7 @@ namespace Project.Scripts {
             return pool.Dequeue();
         }
 
-        public void ReturnObject(T obj) {
+        public virtual void ReturnObject(T obj) {
             obj.gameObject.SetActive(false);
             var objTransform = obj.transform;
             objTransform.position = prefab.transform.position;
