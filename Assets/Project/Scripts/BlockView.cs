@@ -4,11 +4,19 @@ using UnityEngine;
 
 namespace Project.Scripts {
     public class BlockView : MonoBehaviour {
+        [SerializeField] private GameController gameController;
         [SerializeField] private SpriteRenderer spriteRenderer;
         [SerializeField] private Sprite spriteDamaged;
         [SerializeField] private Sprite spriteIntact;
 
         public Block Block { get; private set; }
+
+        private void Awake() {
+            if (gameController == null) {
+                gameController = GameObject.FindWithTag(Consts.GAME_CONTROLLER_TAG).GetComponent<GameController>();
+            }
+            transform.localScale *= spriteRenderer.bounds.size.x / gameController.CellSize;
+        }
 
         private void UpdateSprite() {
             spriteRenderer.sprite = Block.Type switch {
