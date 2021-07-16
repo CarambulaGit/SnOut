@@ -26,6 +26,7 @@ namespace Project.Classes {
         }
 
         public void ChangeSnake(Snake snake) {
+            _snake.OnSelfCollision -= FinishGame;
             _snake = snake;
             _snake.OnSelfCollision += FinishGame;
             OnSnakeReplaced?.Invoke();
@@ -33,6 +34,10 @@ namespace Project.Classes {
 
         public bool TryChangeSnakeDir(Snake.Direction newDir) {
             return _snake.TryChangeDir(newDir);
+        }
+
+        public void IncrementSnakeSize() {
+            _snake.IncrementSize();
         }
 
         public void Tick() {
@@ -72,7 +77,7 @@ namespace Project.Classes {
             OnGameStarted?.Invoke();
         }
 
-        private void FinishGame() {
+        public void FinishGame() {
             if (!GameOn) {
                 throw new Exception("Can't finish before start");
             }
