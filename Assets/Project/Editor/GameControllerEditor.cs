@@ -8,20 +8,28 @@ namespace Project.Editor {
     [CustomEditor(typeof(GameController))]
     public class GameControllerEditor : UnityEditor.Editor {
         private GameController _gameController;
-        private bool _firstTime = true;
 
         private void OnEnable() {
             _gameController = target as GameController;
         }
 
         public override void OnInspectorGUI() {
+            if (GUILayout.Button("Restart")) {
+                _gameController.Restart();
+            }
+
             if (GUILayout.Button("Tick")) {
-                if (_firstTime) {
+                if (!_gameController.GameOn) {
                     _gameController.GameManager.StartGame();
-                    _firstTime = false;
                 }
+
                 _gameController.GameManager.Tick();
             }
+
+            if (GUILayout.Button("Increment size")) {
+                _gameController.GameManager.IncrementSnakeSize();
+            }
+
             if (GUILayout.Button("Left")) {
                 _gameController.GameManager.TryChangeSnakeDir(Snake.Direction.Left);
             }
