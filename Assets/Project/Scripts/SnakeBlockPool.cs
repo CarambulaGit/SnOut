@@ -1,7 +1,7 @@
 ﻿namespace Project.Scripts {
     public class SnakeBlockPool : Pool<SnakeBlockView> {
         public override void ReturnObject(SnakeBlockView obj) {
-            obj.Unconnect();
+            obj.Disconnect();
             base.ReturnObject(obj);
         }
     }
