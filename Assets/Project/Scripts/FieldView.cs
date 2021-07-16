@@ -9,9 +9,9 @@ namespace Project.Scripts {
         [SerializeField] private GameController gameController;
         [SerializeField] private Pool<BlockView> blocksPool;
         [SerializeField] private TransformsGrid grid;
-        
+
         public Field Field { get; private set; }
-        
+
         private readonly List<BlockView> _blockViews = new List<BlockView>();
         private Transform[,] _blockTransforms;
 
@@ -86,5 +86,7 @@ namespace Project.Scripts {
                 blockTransform?.gameObject.SetActive(true);
             }
         }
+
+        public void Restart() => Field.SpawnBlocks(new Vector2Int(blockClearXSize, blockClearYSize));
     }
 }
