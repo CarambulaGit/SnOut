@@ -22,13 +22,16 @@ namespace Project.Scripts {
         }
 
         private void CreateAndTuneSnake() {
+            if (Snake != null) {
+                Snake.OnCurrentSizeIncremented -= AddSnakeBlockAtEnd;
+            }
+
             var startPos = new Vector2Int(gameController.FieldXSize / 2, gameController.FieldYSize / 2);
             Snake = new Snake(startPos, Snake.Direction.Up);
             InitViews();
             ConnectSnakeBlocksWithViews();
             SetCorrectViewsOptions();
             Snake.OnCurrentSizeIncremented += AddSnakeBlockAtEnd;
-            gameController.GameManager.OnSnakeReplaced += ReturnBlocks;
         }
 
         private void ReturnBlocks() {
@@ -48,6 +51,7 @@ namespace Project.Scripts {
         }
 
         private void InitViews() {
+            ReturnBlocks();
             _snakeBlockViews.Clear();
             Snake.SnakeBlocks.ForEach(snakeBlock => { InitView(); });
         }
@@ -70,6 +74,11 @@ namespace Project.Scripts {
             for (var i = 0; i < _snakeBlockViews.Count; i++) {
                 SetCorrectViewOptions(i);
             }
+        }
+
+        public void Restart() {
+            CreateAndTuneSnake();
+            gameController.GameManager.ChangeSnake(Snake);
         }
     }
 }
