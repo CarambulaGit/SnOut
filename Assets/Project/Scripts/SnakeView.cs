@@ -8,6 +8,7 @@ namespace Project.Scripts {
     public class SnakeView : MonoBehaviour {
         [SerializeField] private Pool<SnakeBlockView> snakeBlocksPool;
         [SerializeField] private Game game;
+        [SerializeField] private int startSize = 1;
 
         private readonly List<SnakeBlockView> _snakeBlockViews = new List<SnakeBlockView>();
 
@@ -27,7 +28,7 @@ namespace Project.Scripts {
             }
 
             var startPos = new Vector2Int(game.FieldXSize / 2, game.FieldYSize / 2);
-            Snake = new Snake(startPos, Snake.Direction.Up);
+            Snake = new Snake(startPos, Snake.Direction.Up, startSize);
             InitViews();
             ConnectSnakeBlocksWithViews();
             SetCorrectViewsOptions();

@@ -55,10 +55,19 @@ namespace Project.Classes {
         public int CurrentSize => SnakeBlocks.Count; // can be less than Size
         private bool NeedToRemove => Size + 1 == CurrentSize;
 
-        public Snake(Vector2Int startPos, Direction startDir) {
+        public Snake(Vector2Int startPos, Direction startDir, int size = 1) {
             SnakeBlocks.Add(new SnakeBlock(startPos));
             CurDir = startDir;
-            Size = 1;
+            Size = size;
+        }
+
+        public Snake(IEnumerable<SnakeBlock> snakeBlocks, Direction startDir) {
+            foreach (var snakeBlock in snakeBlocks) {
+                SnakeBlocks.Add(snakeBlock);
+            }
+
+            CurDir = startDir;
+            Size = SnakeBlocks.Count;
         }
 
         public void IncrementSize() => Size++;
