@@ -6,6 +6,11 @@ TagManager:
   tags:
   - InputController
   - Grid
+  - Snake
+  - SnakeBlock
+  - Block
+  - Ball
+  - Bound
   layers:
   - Default
   - TransparentFX
