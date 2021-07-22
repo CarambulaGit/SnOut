@@ -39,6 +39,7 @@ namespace Project.Classes {
             FindRectPos(rectSize, out var minX, out var minY, out var maxX, out var maxY);
             for (var y = 0; y < YSize; y++) {
                 for (var x = 0; x < XSize; x++) {
+                    Blocks[y, x]?.UnsubscribeAllFromOnDestroy();
                     if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
                         Blocks[y, x] = null;
                         continue;
