@@ -11,7 +11,7 @@ namespace Project.Scripts {
         [SerializeField] private Sprite spriteHead;
 
         private TransformsGrid _grid;
-        private GameController _gameController;
+        private Game _game;
         private Coroutine _moveCoroutine;
         private Vector2 _lastTarget;
 
@@ -19,19 +19,25 @@ namespace Project.Scripts {
         public Snake Snake { get; private set; }
         public Snake.SnakeBlock SnakeBlock => Snake.SnakeBlocks[SnakeBlockIndex];
         public bool Connected { get; private set; }
+        public bool IsHead => SnakeBlockIndex == 0;
 
         private void Awake() {
-            _gameController = GameObject.FindWithTag(Consts.GAME_CONTROLLER_TAG).GetComponent<GameController>();
+            _game = GameObject.FindWithTag(Consts.GAME_TAG).GetComponent<Game>();
             _grid = GameObject.FindWithTag(Consts.GRID).GetComponent<TransformsGrid>();
-            transform.localScale *= spriteRenderer.bounds.size.x / _gameController.CellSize;
+            transform.localScale *= spriteRenderer.bounds.size.x / _game.CellSize;
         }
 
         private void Start() {
-            _gameController.GameManager.OnTickEnd += UpdatePosition;
+            _game.GameManager.OnTickEnd += UpdatePosition;
+            _game.GameManager.OnGameFinished += () => {
+                if (_moveCoroutine != null) {
+                    StopCoroutine(_moveCoroutine);
+                }
+            };
         }
 
         private void UpdateSprite() {
-            spriteRenderer.sprite = SnakeBlockIndex == 0 ? spriteHead : spriteDefault;
+            spriteRenderer.sprite = IsHead ? spriteHead : spriteDefault;
         }
 
         public void ConnectToSnakeBlock(int snakeBlockIndex, Snake snake) {
@@ -64,12 +70,24 @@ namespace Project.Scripts {
             _lastTarget = targetPos;
             var startPos = rigidbody.position;
             var timer = 0f;
-            while (timer < _gameController.TickTime) {
+            while (timer < _game.TickTime - Time.fixedDeltaTime) {
                 timer += Time.fixedDeltaTime;
-                rigidbody.MovePosition(Vector2.Lerp(startPos, targetPos, timer / _gameController.TickTime));
+                rigidbody.MovePosition(Vector2.Lerp(startPos, targetPos, timer / _game.TickTime));
                 yield return null;
             }
+
             rigidbody.MovePosition(targetPos);
+        }
+
+        private void OnCollisionEnter2D(Collision2D other) {
+            if (IsHead && other.transform.CompareTag(Consts.BALL_TAG)) {
+                _game.GameManager.FinishGame();
+                return;
+            }
+
+            if (other.transform.CompareTag(Consts.BALL_TAG)) {
+                _game.GameManager.IncrementSnakeSize();
+            }
         }
     }
 }
