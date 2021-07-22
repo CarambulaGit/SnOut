@@ -9,7 +9,8 @@
         #region Ball
 
         public const float BALL_SPEED_FOR_BLOCK_DESTROY = 3f;
-
+        public const float BALL_SPEED_COEF_DEFAULT = 0.9f;
+        public const float BALL_SPEED_COEF_SNAKE = 1.1f;
         #endregion
 
         #region SceneNames
@@ -21,10 +22,14 @@
 
         #region Tags
 
-        public const string GAME_CONTROLLER_TAG = "GameController";
-        public const string BALL_TAG = "Ball";
+        public const string GAME_TAG = "GameController";
         public const string INPUT_CONTROLLER_TAG = "InputController";
         public const string GRID = "Grid";
+        public const string BALL_TAG = "Ball";
+        public const string SNAKE_TAG = "Snake";
+        public const string SNAKE_BLOCK_TAG = "SnakeBlock";
+        public const string BLOCK_TAG = "Block";
+        public const string BOUND_TAG = "Bound";
 
         #endregion
     }
