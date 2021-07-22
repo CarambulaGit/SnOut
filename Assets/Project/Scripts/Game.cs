@@ -5,8 +5,8 @@ using UnityEngine.EventSystems;
 
 namespace Project.Scripts {
     public class Game : MonoBehaviour {
-        [Range(2, 20)] [SerializeField] private int fieldXSize;
-        [Range(2, 20)] [SerializeField] private int fieldYSize;
+        [Range(4, 20)] [SerializeField] private int fieldXSize;
+        [Range(4, 20)] [SerializeField] private int fieldYSize;
         [SerializeField] private FieldView fieldView;
         [SerializeField] private SnakeView snakeView;
         [SerializeField] private SnakeController snakeController;

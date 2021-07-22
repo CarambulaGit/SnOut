@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace Project.Scripts {
     public class FieldView : MonoBehaviour {
-        [Range(2, 20)] [SerializeField] private int blockClearXSize;
-        [Range(2, 20)] [SerializeField] private int blockClearYSize;
+        [Range(4, 20)] [SerializeField] private int blockClearXSize;
+        [Range(4, 20)] [SerializeField] private int blockClearYSize;
         [SerializeField] private Game game;
         [SerializeField] private Pool<BlockView> blocksPool;
         [SerializeField] private TransformsGrid grid;
