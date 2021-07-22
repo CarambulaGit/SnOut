@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Project.Scripts {
     public class BlockView : MonoBehaviour {
-        [SerializeField] private GameController gameController;
+        [SerializeField] private Game game;
         [SerializeField] private SpriteRenderer spriteRenderer;
         [SerializeField] private Sprite spriteDamaged;
         [SerializeField] private Sprite spriteIntact;
@@ -12,10 +12,10 @@ namespace Project.Scripts {
         public Block Block { get; private set; }
 
         private void Awake() {
-            if (gameController == null) {
-                gameController = GameObject.FindWithTag(Consts.GAME_CONTROLLER_TAG).GetComponent<GameController>();
+            if (game == null) {
+                game = GameObject.FindWithTag(Consts.GAME_TAG).GetComponent<Game>();
             }
-            transform.localScale *= spriteRenderer.bounds.size.x / gameController.CellSize;
+            transform.localScale *= spriteRenderer.bounds.size.x / game.CellSize;
         }
 
         private void UpdateSprite() {
@@ -29,9 +29,12 @@ namespace Project.Scripts {
         public void ConnectToBlock(Block block) {
             Block = block;
             Block.OnTypeChanged += UpdateSprite;
-
-            Block.OnDestroy += () => { Block = null; };
             UpdateSprite();
+        }
+
+        public void Disconnect() {
+            Block.OnTypeChanged -= UpdateSprite;
+            Block = null;
         }
 
         // private void OnCollisionExit2D(Collision2D collision) { }

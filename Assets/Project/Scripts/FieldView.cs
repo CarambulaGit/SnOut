@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Project.Classes;
 using UnityEngine;
@@ -6,7 +7,7 @@ namespace Project.Scripts {
     public class FieldView : MonoBehaviour {
         [Range(2, 20)] [SerializeField] private int blockClearXSize;
         [Range(2, 20)] [SerializeField] private int blockClearYSize;
-        [SerializeField] private GameController gameController;
+        [SerializeField] private Game game;
         [SerializeField] private Pool<BlockView> blocksPool;
         [SerializeField] private TransformsGrid grid;
 
@@ -16,8 +17,8 @@ namespace Project.Scripts {
         private Transform[,] _blockTransforms;
 
         private void Awake() {
-            if (gameController == null) {
-                gameController = GameObject.FindWithTag(Consts.GAME_CONTROLLER_TAG).GetComponent<GameController>();
+            if (game == null) {
+                game = GameObject.FindWithTag(Consts.GAME_TAG).GetComponent<Game>();
             }
 
             TuneGrid();
@@ -25,7 +26,7 @@ namespace Project.Scripts {
         }
 
         private void CreateAndTuneField() {
-            Field = new Field(gameController.FieldXSize, gameController.FieldYSize);
+            Field = new Field(game.FieldXSize, game.FieldYSize);
             Field.OnBlocksArrayChanged += () => {
                 InitViews();
                 ConnectBlocksWithViews();
@@ -35,11 +36,16 @@ namespace Project.Scripts {
         }
 
         private void TuneGrid() {
-            grid.cellSize = new Vector2(gameController.CellSize, gameController.CellSize);
+            grid.cellSize = new Vector2(game.CellSize, game.CellSize);
             grid.alignment = TransformsGrid.Alignment.Central;
+        }
+        
+        private void ReturnBlocks() {
+            _blockViews.ForEach(blocksPool.ReturnObject);
         }
 
         private void InitViews() {
+            ReturnBlocks();
             _blockViews.Clear();
             _blockTransforms = new Transform[Field.Blocks.GetLength(0), Field.Blocks.GetLength(1)];
             var height = Field.Blocks.GetLength(0);
@@ -65,18 +71,18 @@ namespace Project.Scripts {
                     }
 
                     _blockViews[counter].ConnectToBlock(Field.Blocks[y, x]);
-                    SubscribeToBlockOnDestroy(y, x, counter);
+                    SubscribeToBlockOnDestroy(y, x, _blockViews[counter]);
                     counter++;
                 }
             }
         }
 
-        private void SubscribeToBlockOnDestroy(int y, int x, int counter) {
-            _blockViews[counter].Block.OnDestroy += () => {
-                Field.Blocks[y, x] = null;
+        private void SubscribeToBlockOnDestroy(int y, int x, BlockView blockView) {
+            blockView.Block.OnDestroy += () => {
                 _blockTransforms[y, x] = null;
-                blocksPool.ReturnObject(_blockViews[counter]);
-                _blockViews[counter] = null;
+                blocksPool.ReturnObject(blockView);
+                _blockViews.Remove(blockView);
+                Field.Blocks[y, x] = null;
             };
         }
 
