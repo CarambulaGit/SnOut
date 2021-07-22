@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace Project.Scripts {
-    public class GameController : MonoBehaviour {
+    public class Game : MonoBehaviour {
         [Range(2, 20)] [SerializeField] private int fieldXSize;
         [Range(2, 20)] [SerializeField] private int fieldYSize;
         [SerializeField] private FieldView fieldView;
         [SerializeField] private SnakeView snakeView;
         [SerializeField] private SnakeController snakeController;
+        [SerializeField] private Ball ball;
         [SerializeField] private InputController inputController;
         [SerializeField] private float cellSize;
         [SerializeField] private float tickTime = 1f;
@@ -45,7 +46,7 @@ namespace Project.Scripts {
             if (!GameOn) return;
 
             _timer += Time.fixedDeltaTime;
-            if (!(_timer >= tickTime)) return;
+            if (_timer < tickTime) return;
             GameManager.TryChangeSnakeDir(snakeController.CurrentDirection);
             GameManager.Tick();
             _timer = 0;
@@ -58,6 +59,7 @@ namespace Project.Scripts {
 
             fieldView.Restart();
             snakeView.Restart();
+            ball.MoveToDefaultPosition();
         }
     }
 }

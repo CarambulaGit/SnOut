@@ -7,15 +7,15 @@ using UnityEngine;
 namespace Project.Scripts {
     public class SnakeView : MonoBehaviour {
         [SerializeField] private Pool<SnakeBlockView> snakeBlocksPool;
-        [SerializeField] private GameController gameController;
+        [SerializeField] private Game game;
 
         private readonly List<SnakeBlockView> _snakeBlockViews = new List<SnakeBlockView>();
 
         public Snake Snake { get; private set; }
 
         private void Start() {
-            if (gameController == null) {
-                gameController = GameObject.FindWithTag(Consts.GAME_CONTROLLER_TAG).GetComponent<GameController>();
+            if (game == null) {
+                game = GameObject.FindWithTag(Consts.GAME_TAG).GetComponent<Game>();
             }
 
             CreateAndTuneSnake();
@@ -26,7 +26,7 @@ namespace Project.Scripts {
                 Snake.OnCurrentSizeIncremented -= AddSnakeBlockAtEnd;
             }
 
-            var startPos = new Vector2Int(gameController.FieldXSize / 2, gameController.FieldYSize / 2);
+            var startPos = new Vector2Int(game.FieldXSize / 2, game.FieldYSize / 2);
             Snake = new Snake(startPos, Snake.Direction.Up);
             InitViews();
             ConnectSnakeBlocksWithViews();
@@ -78,7 +78,7 @@ namespace Project.Scripts {
 
         public void Restart() {
             CreateAndTuneSnake();
-            gameController.GameManager.ChangeSnake(Snake);
+            game.GameManager.ChangeSnake(Snake);
         }
     }
 }
