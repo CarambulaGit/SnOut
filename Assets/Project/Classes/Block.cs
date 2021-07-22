@@ -45,6 +45,11 @@ namespace Project.Classes {
 
         private void Destroy() {
             OnDestroy?.Invoke();
+            UnsubscribeAllFromOnDestroy();
+        }
+
+        public void UnsubscribeAllFromOnDestroy() {
+            OnDestroy = null;
         }
     }
 }
