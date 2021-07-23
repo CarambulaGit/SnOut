@@ -84,12 +84,20 @@ namespace Project.Scripts {
         }
 
         public Vector3 GetLocalPositionByXAndY(int x, int y) {
+            return GetLocalPositionByXAndY((float) x, (float) y);
+        }
+
+        public Vector3 GetLocalPositionByXAndY(float x, float y) {
             var offsetY = alignment == Alignment.Central ? y + 0.5f - rowCount / 2f : y + 0.5f;
             var offsetX = alignment == Alignment.Central ? x + 0.5f - columnCount / 2f : x + 0.5f;
             return new Vector3(offsetX * cellSize.x, -offsetY * cellSize.y);
         }
 
         public Vector3 GetGlobalPositionByXAndY(int x, int y) {
+            return GetGlobalPositionByXAndY((float) x, (float) y);
+        }
+
+        public Vector3 GetGlobalPositionByXAndY(float x, float y) {
             return transform.position + GetLocalPositionByXAndY(x, y);
         }
     }
