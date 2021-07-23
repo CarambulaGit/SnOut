@@ -48,7 +48,9 @@ namespace Project.Scripts {
             SnakeBlockIndex = snakeBlockIndex;
             UpdateSprite();
             Connected = true;
-            transform.position = _grid.GetGlobalPositionByXAndY(SnakeBlock.X, SnakeBlock.Y);
+            var pos = _grid.GetGlobalPositionByXAndY(SnakeBlock.X, SnakeBlock.Y);
+            transform.position = pos;
+            _lastTarget = pos;
         }
 
         public void Disconnect() {
