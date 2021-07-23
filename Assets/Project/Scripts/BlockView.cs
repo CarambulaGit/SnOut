@@ -4,18 +4,21 @@ using UnityEngine;
 
 namespace Project.Scripts {
     public class BlockView : MonoBehaviour {
-        [SerializeField] private Game game;
         [SerializeField] private SpriteRenderer spriteRenderer;
         [SerializeField] private Sprite spriteDamaged;
         [SerializeField] private Sprite spriteIntact;
+        private Game _game;
 
         public Block Block { get; private set; }
 
         private void Awake() {
-            if (game == null) {
-                game = GameObject.FindWithTag(Consts.GAME_TAG).GetComponent<Game>();
+            if (_game == null) {
+                _game = GameObject.FindWithTag(Consts.GAME_TAG).GetComponent<Game>();
             }
-            transform.localScale *= spriteRenderer.bounds.size.x / game.CellSize;
+        }
+
+        private void OnEnable() {
+            transform.localScale *= _game.CellSize / spriteRenderer.bounds.size.x ;
         }
 
         private void UpdateSprite() {

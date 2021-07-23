@@ -11,6 +11,7 @@
         public const float BALL_SPEED_FOR_BLOCK_DESTROY = 3f;
         public const float BALL_SPEED_COEF_DEFAULT = 0.9f;
         public const float BALL_SPEED_COEF_SNAKE = 1.1f;
+        public const float BALL_SIZE_TO_GRID_COEF = 0.5f;
         #endregion
 
         #region SceneNames

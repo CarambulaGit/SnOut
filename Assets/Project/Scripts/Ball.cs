@@ -5,14 +5,18 @@ using UnityEngine;
 namespace Project.Scripts {
     public class Ball : MonoBehaviour {
         [SerializeField] private Game game;
+        [SerializeField] private SpriteRenderer spriteRenderer;
         [SerializeField] private Vector3 defaultPosition = Vector3.down;
         [SerializeField] private Vector2 defaultVelocity = Vector2.up;
         private Rigidbody2D _rigidbody;
 
-        void Awake() {
+        private void Awake() {
             if (game == null) {
                 game = GameObject.FindWithTag(Consts.GAME_TAG).GetComponent<Game>();
             }
+
+            transform.localScale *= Consts.BALL_SIZE_TO_GRID_COEF * game.CellSize / spriteRenderer.bounds.size.x;
+
 
             _rigidbody = GetComponent<Rigidbody2D>();
             MoveToDefaultPosition();

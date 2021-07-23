@@ -24,7 +24,10 @@ namespace Project.Scripts {
         private void Awake() {
             _game = GameObject.FindWithTag(Consts.GAME_TAG).GetComponent<Game>();
             _grid = GameObject.FindWithTag(Consts.GRID).GetComponent<TransformsGrid>();
-            transform.localScale *= spriteRenderer.bounds.size.x / _game.CellSize;
+        }
+
+        private void OnEnable() {
+            transform.localScale *= _game.CellSize / spriteRenderer.bounds.size.x;
         }
 
         private void Start() {
