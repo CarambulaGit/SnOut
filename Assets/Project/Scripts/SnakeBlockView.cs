@@ -70,13 +70,14 @@ namespace Project.Scripts {
         }
 
         private IEnumerator MoveCoroutine(Vector2 targetPos) {
+            yield return new WaitForFixedUpdate();
             _lastTarget = targetPos;
             var startPos = rigidbody.position;
-            var timer = 0f;
-            while (timer < _game.TickTime - Time.fixedDeltaTime) {
-                timer += Time.fixedDeltaTime;
+            var timer = Time.fixedDeltaTime;
+            while (timer < _game.TickTime) {
                 rigidbody.MovePosition(Vector2.Lerp(startPos, targetPos, timer / _game.TickTime));
-                yield return null;
+                timer += Time.fixedDeltaTime;
+                yield return new WaitForFixedUpdate();
             }
 
             rigidbody.MovePosition(targetPos);
