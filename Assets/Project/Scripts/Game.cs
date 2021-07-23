@@ -42,12 +42,17 @@ namespace Project.Scripts {
             }
         }
 
+
         private void FixedUpdate() {
             if (!GameOn) return;
-
             _timer += Time.fixedDeltaTime;
             if (_timer < tickTime) return;
-            GameManager.TryChangeSnakeDir(snakeController.CurrentDirection);
+            while (snakeController.ThereAreCommands) {
+                if (GameManager.TryChangeSnakeDir(snakeController.GetCommand())) {
+                    break;
+                }
+            }
+
             GameManager.Tick();
             _timer = 0;
         }
