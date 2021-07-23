@@ -51,7 +51,7 @@ namespace Project.Scripts {
                 coef = Consts.BALL_SPEED_COEF_SNAKE;
             }
 
-            _rigidbody.velocity = coef * other.relativeVelocity;
+            _rigidbody.velocity *= coef;
         }
     }
 }
